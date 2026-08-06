@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-night text-chalk antialiased;
+    font-feature-settings: 'kern', 'liga';
+  }
+}
+
+@layer components {
+  /* Etiqueta chica en versalitas, usada para metadatos (fechas, lugares, secciones). */
+  .eyebrow {
+    @apply text-[0.68rem] uppercase tracking-[0.18em] text-dim;
+  }
+}

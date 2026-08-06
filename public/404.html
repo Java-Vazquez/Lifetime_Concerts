@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Lifetime Concerts</title>
+    <!--
+      GitHub Pages no sabe de rutas del cliente: al entrar directo a
+      /Lifetime_Concerts/concierto/<id> sirve este 404. Acá se codifica la ruta
+      en la query y se redirige a index.html, que la restaura antes de montar React.
+    -->
+    <script>
+      // Cantidad de segmentos a conservar: 1 = el nombre del repo.
+      var pathSegmentsToKeep = 1
+      var l = window.location
+      l.replace(
+        l.protocol +
+          '//' +
+          l.hostname +
+          (l.port ? ':' + l.port : '') +
+          l.pathname
+            .split('/')
+            .slice(0, 1 + pathSegmentsToKeep)
+            .join('/') +
+          '/?/' +
+          l.pathname
+            .slice(1)
+            .split('/')
+            .slice(pathSegmentsToKeep)
+            .join('/')
+            .replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash,
+      )
+    </script>
+  </head>
+  <body></body>
+</html>

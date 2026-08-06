@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.env.local
+*.log
+
+# Estado local del CLI de Supabase: incluye la cadena de conexión a la base.
+supabase/.temp/
+
+# Herramientas locales con rutas de esta máquina.
+dev.cmd
+.claude/
