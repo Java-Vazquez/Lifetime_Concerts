@@ -11,7 +11,7 @@ export function useConcerts() {
 
     supabase
       .from('concerts')
-      .select('id, artist_name, venue_name, city, event_date, image_url')
+      .select('id, artist_name, venue_name, city, event_date, image_url, festival')
       .order('event_date', { ascending: false })
       .then(({ data, error }) => {
         if (cancelled) return

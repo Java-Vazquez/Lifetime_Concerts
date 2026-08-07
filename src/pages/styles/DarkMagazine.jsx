@@ -15,10 +15,9 @@ function Feature({ concert }) {
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
       )}
-      {/* Doble scrim + sombra en el texto: las fotos de artista van de muy
-          oscuras a muy claras y el texto debe leerse sobre cualquiera. */}
-      <div className="absolute inset-0 bg-night/25" />
-      <div className="absolute inset-0 bg-gradient-to-t from-night from-20% via-night/85 via-55% to-transparent" />
+      {/* El degradado solo cubre la franja de abajo donde va el texto;
+          la foto queda limpia. La sombra en el texto hace el resto. */}
+      <div className="absolute inset-0 bg-gradient-to-t from-night/95 from-2% via-night/55 via-24% to-transparent to-52%" />
       <div className="absolute inset-x-0 bottom-0 p-6 [text-shadow:0_1px_5px_rgb(0_0_0_/_0.9)] sm:p-8">
         <p className="eyebrow text-ember">{formatLong(concert.event_date)}</p>
         <h2 className="mt-2 font-archivo text-4xl font-extrabold uppercase leading-none tracking-tight sm:text-6xl">
@@ -89,7 +88,10 @@ export default function DarkMagazine({ concerts }) {
                     />
                   )}
                   <div className="min-w-0 flex-1 border-b border-edge pb-3">
-                    <p className="eyebrow text-ember">{formatDayMonth(concert.event_date)}</p>
+                    <p className="eyebrow text-ember">
+                      {formatDayMonth(concert.event_date)}
+                      {concert.festival && <span className="text-dim"> · {concert.festival}</span>}
+                    </p>
                     <h3 className="mt-1 font-archivo text-lg font-bold uppercase leading-tight tracking-tight transition-colors group-hover:text-ember">
                       {concert.artist_name}
                     </h3>

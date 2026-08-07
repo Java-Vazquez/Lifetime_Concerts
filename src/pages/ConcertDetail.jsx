@@ -50,6 +50,13 @@ export default function ConcertDetail() {
           <h1 className="mt-2 font-archivo text-4xl font-extrabold uppercase leading-none tracking-tight sm:text-6xl">
             {concert.artist_name}
           </h1>
+          {concert.festival && (
+            <p className="mt-3">
+              <span className="rounded-full border border-ember/50 px-3 py-1 text-xs uppercase tracking-[0.14em] text-ember">
+                {concert.festival}
+              </span>
+            </p>
+          )}
           <p className="mt-3 text-dim">
             {[concert.venue_name, concert.city, concert.country].filter(Boolean).join(' · ')}
           </p>

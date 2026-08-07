@@ -12,6 +12,14 @@ export default function NavBar() {
           Lifetime Concerts
         </Link>
         <div className="flex items-center gap-5 text-sm">
+          <NavLink
+            to="/estadisticas"
+            className={({ isActive }) =>
+              isActive ? 'text-chalk' : 'text-dim transition-colors hover:text-chalk'
+            }
+          >
+            Números
+          </NavLink>
           {session ? (
             <>
               <NavLink

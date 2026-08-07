@@ -50,16 +50,18 @@ export default function PosterWall({ concerts }) {
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   )}
-                  {/* Doble scrim + sombra en el texto: las fotos de artista van de
-                      muy oscuras a muy claras y el texto debe leerse sobre cualquiera. */}
-                  <div className="absolute inset-0 bg-night/25" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-night from-25% via-night/85 via-55% to-transparent" />
+                  {/* El degradado solo cubre la franja de abajo donde va el texto;
+                      la foto queda limpia. La sombra en el texto hace el resto. */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-night/95 from-2% via-night/55 via-22% to-transparent to-48%" />
                   <div className="absolute inset-x-0 bottom-0 p-3 [text-shadow:0_1px_4px_rgb(0_0_0_/_0.9)]">
                     <p className="eyebrow text-ember">{formatDayMonth(concert.event_date)}</p>
                     <h3 className="font-anton text-lg uppercase leading-tight">
                       {concert.artist_name}
                     </h3>
-                    <p className="truncate text-xs text-dim">{concert.venue_name}</p>
+                    <p className="truncate text-xs text-dim">
+                      {concert.festival ? `${concert.festival} · ` : ''}
+                      {concert.venue_name}
+                    </p>
                   </div>
                 </Link>
               ))}

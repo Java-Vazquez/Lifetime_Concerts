@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.jsx'
+import Stats from './pages/Stats.jsx'
 import ConcertDetail from './pages/ConcertDetail.jsx'
 import AddConcert from './pages/AddConcert.jsx'
 import Login from './pages/Login.jsx'
@@ -13,6 +14,7 @@ export default function App() {
       <main className="mx-auto max-w-5xl px-6 py-12">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/estadisticas" element={<Stats />} />
           <Route path="/concierto/:id" element={<ConcertDetail />} />
           <Route path="/login" element={<Login />} />
           <Route
