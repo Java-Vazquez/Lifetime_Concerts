@@ -19,6 +19,21 @@ jobs:
           node-version: 20
           cache: npm
 
+      # Sin credenciales el sitio compila igual pero queda en blanco, así que
+      # conviene fallar acá antes de publicar. No imprime los valores.
+      - name: Verificar secrets de Supabase
+        env:
+          URL: ${{ secrets.VITE_SUPABASE_URL }}
+          KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          missing=0
+          if [ -z "$URL" ]; then echo "::error::Falta el secret VITE_SUPABASE_URL"; missing=1; else echo "VITE_SUPABASE_URL: presente (${#URL} caracteres)"; fi
+          if [ -z "$KEY" ]; then echo "::error::Falta el secret VITE_SUPABASE_ANON_KEY"; missing=1; else echo "VITE_SUPABASE_ANON_KEY: presente (${#KEY} caracteres)"; fi
+          if [ "$missing" = "1" ]; then
+            echo "Cargalos en Settings → Secrets and variables → Actions → pestaña Secrets."
+            exit 1
+          fi
+
       - run: npm ci
       - run: npm run build
         env:
