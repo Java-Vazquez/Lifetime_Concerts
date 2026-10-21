@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabaseClient.js'
 import { performedSongs } from '../lib/songs.js'
+import { useI18n } from '../lib/i18n.jsx'
 
 export default function Setlist({ concert }) {
+  const { t } = useI18n()
   const [songs, setSongs] = useState(performedSongs(concert.songs))
   const [loading, setLoading] = useState(false)
   const [unavailable, setUnavailable] = useState(!concert.setlistfm_id)
@@ -19,7 +21,7 @@ export default function Setlist({ concert }) {
     setLoading(false)
 
     if (error) {
-      setError('No se pudo cargar el setlist.')
+      setError(t('setlist.error'))
       return
     }
     if (data.unavailable) {
@@ -32,7 +34,7 @@ export default function Setlist({ concert }) {
   if (songs.length > 0) {
     return (
       <section>
-        <h2 className="eyebrow border-b border-edge pb-3">Lo que se tocó</h2>
+        <h2 className="eyebrow border-b border-edge pb-3">{t('setlist.title')}</h2>
         {/* columnas CSS: la lista baja por la izquierda y sigue en la derecha,
             que es como se lee un setlist (grid la ordenaría en zigzag). */}
         <ol className="mt-6 sm:columns-2 sm:gap-x-10">
@@ -56,7 +58,7 @@ export default function Setlist({ concert }) {
             rel="noreferrer"
             className="eyebrow mt-8 inline-block underline decoration-edge underline-offset-4 hover:text-chalk"
           >
-            Ver en setlist.fm
+            {t('setlist.viewOn')}
           </a>
         )}
       </section>
@@ -66,7 +68,7 @@ export default function Setlist({ concert }) {
   if (unavailable) {
     return (
       <p className="border-t border-edge pt-6 text-sm text-dim">
-        No hay setlist de este show en setlist.fm.
+        {t('setlist.unavailable')}
       </p>
     )
   }
@@ -78,7 +80,7 @@ export default function Setlist({ concert }) {
         disabled={loading}
         className="rounded-sm border border-chalk px-5 py-2.5 text-sm transition-colors hover:bg-chalk hover:text-night disabled:opacity-40"
       >
-        {loading ? 'Buscando…' : 'Ver las canciones que se tocaron ese día'}
+        {loading ? t('setlist.loading') : t('setlist.load')}
       </button>
       {error && <p className="mt-3 text-sm text-ember">{error}</p>}
     </div>

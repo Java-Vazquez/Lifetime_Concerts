@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient.js'
+import { useI18n } from '../lib/i18n.jsx'
 
 const inputClass =
   'w-full rounded-sm border border-edge bg-surface px-3 py-2.5 outline-none transition-colors placeholder:text-dim/70 focus:border-chalk'
@@ -11,6 +12,7 @@ export default function Login() {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { t } = useI18n()
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -27,11 +29,13 @@ export default function Login() {
 
   return (
     <div className="max-w-sm">
-      <h1 className="font-archivo font-bold uppercase tracking-tight text-4xl leading-tight">Entrar</h1>
+      <h1 className="font-archivo font-bold uppercase tracking-tight text-4xl leading-tight">
+        {t('login.title')}
+      </h1>
 
       <form onSubmit={handleSubmit} className="mt-10 flex flex-col gap-4">
         <label className="flex flex-col gap-2">
-          <span className="eyebrow">Email</span>
+          <span className="eyebrow">{t('login.email')}</span>
           <input
             type="email"
             value={email}
@@ -41,7 +45,7 @@ export default function Login() {
           />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="eyebrow">Contraseña</span>
+          <span className="eyebrow">{t('login.password')}</span>
           <input
             type="password"
             value={password}
@@ -58,13 +62,12 @@ export default function Login() {
           disabled={loading}
           className="mt-2 self-start rounded-sm border border-chalk px-5 py-2.5 text-sm transition-colors hover:bg-chalk hover:text-night disabled:opacity-40"
         >
-          {loading ? 'Entrando…' : 'Entrar'}
+          {loading ? t('login.submitting') : t('login.submit')}
         </button>
       </form>
 
       <p className="mt-8 text-sm text-dim">
-        Solo para el dueño del sitio. El usuario se crea desde el dashboard de Supabase
-        (Authentication → Users).
+        {t('login.note')}
       </p>
     </div>
   )

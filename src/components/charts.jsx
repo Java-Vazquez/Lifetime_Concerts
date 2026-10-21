@@ -49,7 +49,9 @@ export function YearColumns({ data }) {
 
 // Barras horizontales para rankings: el nombre necesita ancho, el valor va al extremo.
 // Las listas largas no se recortan: se muestran enteras dentro de un área con scroll.
-export function BarList({ data, unit, scrollAfter = 8 }) {
+// `format` recibe el número de cada fila y devuelve el texto ya pluralizado;
+// una unidad fija daría "1 shows".
+export function BarList({ data, format = String, scrollAfter = 8 }) {
   const max = Math.max(...data.map((d) => d.value), 1)
   const scrolls = data.length > scrollAfter
 
@@ -63,16 +65,13 @@ export function BarList({ data, unit, scrollAfter = 8 }) {
         <li key={d.label}>
           <div className="flex items-baseline justify-between gap-4">
             <span className="truncate text-sm">{d.label}</span>
-            <span className="shrink-0 text-sm tabular-nums text-dim">
-              {d.value}
-              {unit ? ` ${unit}` : ''}
-            </span>
+            <span className="shrink-0 text-sm tabular-nums text-dim">{format(d.value)}</span>
           </div>
           <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-surface">
             <div
               className="h-full rounded-full bg-chart"
               style={{ width: `${(d.value / max) * 100}%` }}
-              title={`${d.label}: ${d.value}${unit ? ` ${unit}` : ''}`}
+              title={`${d.label}: ${format(d.value)}`}
             />
           </div>
         </li>

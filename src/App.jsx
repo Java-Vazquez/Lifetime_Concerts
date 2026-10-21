@@ -6,8 +6,11 @@ import AddConcert from './pages/AddConcert.jsx'
 import Login from './pages/Login.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import NavBar from './components/NavBar.jsx'
+import { useI18n } from './lib/i18n.jsx'
 
 export default function App() {
+  const { t } = useI18n()
+
   return (
     <div className="min-h-screen">
       <NavBar />
@@ -28,9 +31,7 @@ export default function App() {
         </Routes>
       </main>
       <footer className="mx-auto max-w-5xl px-6 pb-12">
-        <p className="eyebrow border-t border-edge pt-6">
-          Setlists de setlist.fm · Imágenes de Deezer
-        </p>
+        <p className="eyebrow border-t border-edge pt-6">{t('footer.credits')}</p>
       </footer>
     </div>
   )

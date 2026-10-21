@@ -4,15 +4,17 @@ import { yearOf } from '../lib/dates.js'
 import PosterWall from './styles/PosterWall.jsx'
 import DarkMagazine from './styles/DarkMagazine.jsx'
 import FilterBar, { filterConcerts } from '../components/FilterBar.jsx'
+import { useI18n } from '../lib/i18n.jsx'
 
 const VIEWS = [
-  { id: 'muro', label: 'Muro', Component: PosterWall },
-  { id: 'revista', label: 'Revista', Component: DarkMagazine },
+  { id: 'muro', labelKey: 'home.view.wall', Component: PosterWall },
+  { id: 'revista', labelKey: 'home.view.magazine', Component: DarkMagazine },
 ]
 
 const STORAGE_KEY = 'lifetime-concerts:view'
 
 export default function Home() {
+  const { t } = useI18n()
   const { concerts, error } = useConcerts()
   // La vista elegida se recuerda entre visitas.
   const [view, setView] = useState(() => localStorage.getItem(STORAGE_KEY) ?? VIEWS[0].id)
@@ -33,10 +35,9 @@ export default function Home() {
     localStorage.setItem(STORAGE_KEY, id)
   }
 
-  if (error) return <p className="text-ember">Error cargando conciertos: {error}</p>
-  if (concerts === null) return <p className="text-dim">Cargando…</p>
-  if (concerts.length === 0)
-    return <p className="text-dim">Todavía no cargaste ningún concierto.</p>
+  if (error) return <p className="text-ember">{t('home.error', error)}</p>
+  if (concerts === null) return <p className="text-dim">{t('common.loading')}</p>
+  if (concerts.length === 0) return <p className="text-dim">{t('home.empty')}</p>
 
   const { Component } = VIEWS.find((v) => v.id === view) ?? VIEWS[0]
 
@@ -57,7 +58,7 @@ export default function Home() {
 
         <div
           role="group"
-          aria-label="Modo de vista"
+          aria-label={t('home.viewMode')}
           className="inline-flex shrink-0 gap-1 self-start rounded-full border border-edge bg-surface p-1"
         >
           {VIEWS.map((v) => (
@@ -69,14 +70,14 @@ export default function Home() {
                 v.id === view ? 'bg-chalk text-night' : 'text-dim hover:text-chalk'
               }`}
             >
-              {v.label}
+              {t(v.labelKey)}
             </button>
           ))}
         </div>
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-dim">Ningún show coincide con esa búsqueda.</p>
+        <p className="text-dim">{t('home.noMatch')}</p>
       ) : (
         <Component concerts={filtered} />
       )}

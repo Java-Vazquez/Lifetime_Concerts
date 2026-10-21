@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient.js'
 import SetlistPreview from '../components/SetlistPreview.jsx'
+import { useI18n } from '../lib/i18n.jsx'
 
 const inputClass =
   'w-full rounded-sm border border-edge bg-surface px-3 py-2.5 outline-none transition-colors placeholder:text-dim/70 focus:border-chalk'
@@ -15,6 +16,7 @@ export default function AddConcert() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
+  const { t } = useI18n()
 
   async function handleSearch(e) {
     e.preventDefault()
@@ -82,14 +84,14 @@ export default function AddConcert() {
 
   return (
     <div className="max-w-xl">
-      <h1 className="font-archivo font-bold uppercase tracking-tight text-4xl leading-tight">Agregar concierto</h1>
-      <p className="mt-3 text-dim">
-        Buscá el show en setlist.fm y confirmá cuál fue el que viste.
-      </p>
+      <h1 className="font-archivo font-bold uppercase tracking-tight text-4xl leading-tight">
+        {t('add.title')}
+      </h1>
+      <p className="mt-3 text-dim">{t('add.intro')}</p>
 
       <form onSubmit={handleSearch} className="mt-10 flex flex-col gap-4">
         <label className="flex flex-col gap-2">
-          <span className="eyebrow">Artista</span>
+          <span className="eyebrow">{t('add.artist')}</span>
           <input
             type="text"
             placeholder="Radiohead"
@@ -102,7 +104,7 @@ export default function AddConcert() {
 
         <div className="flex flex-col gap-4 sm:flex-row">
           <label className="flex flex-1 flex-col gap-2">
-            <span className="eyebrow">Fecha</span>
+            <span className="eyebrow">{t('add.date')}</span>
             <input
               type="date"
               value={date}
@@ -111,10 +113,10 @@ export default function AddConcert() {
             />
           </label>
           <label className="flex flex-1 flex-col gap-2">
-            <span className="eyebrow">Ciudad (opcional)</span>
+            <span className="eyebrow">{t('add.city')}</span>
             <input
               type="text"
-              placeholder="Ciudad de México"
+              placeholder={t('add.cityPlaceholder')}
               value={city}
               onChange={(e) => setCity(e.target.value)}
               className={inputClass}
@@ -127,7 +129,7 @@ export default function AddConcert() {
           disabled={searching}
           className="mt-2 self-start rounded-sm border border-chalk px-5 py-2.5 text-sm transition-colors hover:bg-chalk hover:text-night disabled:opacity-40"
         >
-          {searching ? 'Buscando…' : 'Buscar setlist'}
+          {searching ? t('add.searching') : t('add.search')}
         </button>
       </form>
 

@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { groupByYear, concertStats } from '../../lib/useConcerts.js'
 import { formatDayMonth } from '../../lib/dates.js'
+import { useI18n } from '../../lib/i18n.jsx'
 
 export default function PosterWall({ concerts }) {
+  const { t, locale } = useI18n()
   const stats = concertStats(concerts)
 
   return (
@@ -15,9 +17,9 @@ export default function PosterWall({ concerts }) {
         </h1>
         <div className="mt-8 flex flex-wrap gap-x-10 gap-y-3">
           {[
-            [stats.shows, 'shows'],
-            [stats.artists, 'artistas'],
-            [stats.years, 'años'],
+            [stats.shows, t('common.shows')],
+            [stats.artists, t('common.artists')],
+            [stats.years, t('common.years')],
           ].map(([value, label]) => (
             <p key={label} className="font-anton text-3xl uppercase">
               {value} <span className="text-sm tracking-widest text-dim">{label}</span>
@@ -32,7 +34,7 @@ export default function PosterWall({ concerts }) {
             <div className="flex items-baseline gap-4">
               <h2 className="font-anton text-4xl uppercase text-ember">{year}</h2>
               <span className="h-px flex-1 bg-edge" />
-              <span className="eyebrow">{yearConcerts.length} shows</span>
+              <span className="eyebrow">{t('stats.nShows', yearConcerts.length)}</span>
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -54,7 +56,9 @@ export default function PosterWall({ concerts }) {
                       la foto queda limpia. La sombra en el texto hace el resto. */}
                   <div className="absolute inset-0 bg-gradient-to-t from-night/95 from-2% via-night/55 via-22% to-transparent to-48%" />
                   <div className="absolute inset-x-0 bottom-0 p-3 [text-shadow:0_1px_4px_rgb(0_0_0_/_0.9)]">
-                    <p className="eyebrow text-ember">{formatDayMonth(concert.event_date)}</p>
+                    <p className="eyebrow text-ember">
+                      {formatDayMonth(concert.event_date, locale)}
+                    </p>
                     <h3 className="font-anton text-lg uppercase leading-tight">
                       {concert.artist_name}
                     </h3>

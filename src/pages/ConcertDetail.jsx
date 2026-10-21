@@ -3,8 +3,10 @@ import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient.js'
 import { formatLong } from '../lib/dates.js'
 import Setlist from '../components/Setlist.jsx'
+import { useI18n } from '../lib/i18n.jsx'
 
 export default function ConcertDetail() {
+  const { t, locale } = useI18n()
   const { id } = useParams()
   const [concert, setConcert] = useState(null)
   const [error, setError] = useState(null)
@@ -28,13 +30,13 @@ export default function ConcertDetail() {
     }
   }, [id])
 
-  if (error) return <p className="text-ember">No se encontró el concierto.</p>
-  if (!concert) return <p className="text-dim">Cargando…</p>
+  if (error) return <p className="text-ember">{t('detail.notFound')}</p>
+  if (!concert) return <p className="text-dim">{t('common.loading')}</p>
 
   return (
     <article>
       <Link to="/" className="eyebrow transition-colors hover:text-chalk">
-        ← Todos los shows
+        {t('detail.back')}
       </Link>
 
       <header className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:gap-8">
@@ -46,7 +48,7 @@ export default function ConcertDetail() {
           />
         )}
         <div>
-          <p className="eyebrow text-ember">{formatLong(concert.event_date)}</p>
+          <p className="eyebrow text-ember">{formatLong(concert.event_date, locale)}</p>
           <h1 className="mt-2 font-archivo text-4xl font-extrabold uppercase leading-none tracking-tight sm:text-6xl">
             {concert.artist_name}
           </h1>

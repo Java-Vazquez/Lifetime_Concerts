@@ -1,4 +1,5 @@
 import { yearOf } from '../lib/dates.js'
+import { useI18n } from '../lib/i18n.jsx'
 
 // La búsqueda cubre artista, venue, ciudad y festival, que es lo que uno
 // recuerda de un show. Los años van como chips porque son pocos y fijos.
@@ -17,6 +18,7 @@ export function filterConcerts(concerts, { query, year }) {
 }
 
 export default function FilterBar({ years, query, year, onQuery, onYear, results, total }) {
+  const { t } = useI18n()
   const filtering = query.trim() !== '' || year !== null
 
   return (
@@ -26,8 +28,8 @@ export default function FilterBar({ years, query, year, onQuery, onYear, results
           type="search"
           value={query}
           onChange={(e) => onQuery(e.target.value)}
-          placeholder="Buscar banda, venue, festival…"
-          aria-label="Buscar conciertos"
+          placeholder={t('filter.placeholder')}
+          aria-label={t('filter.label')}
           className="w-full rounded-sm border border-edge bg-surface px-3 py-2.5 text-sm outline-none transition-colors placeholder:text-dim/70 focus:border-chalk"
         />
       </div>
@@ -40,7 +42,7 @@ export default function FilterBar({ years, query, year, onQuery, onYear, results
             year === null ? 'bg-chalk text-night' : 'text-dim hover:text-chalk'
           }`}
         >
-          Todos
+          {t('filter.all')}
         </button>
         {years.map((y) => (
           <button
@@ -58,9 +60,9 @@ export default function FilterBar({ years, query, year, onQuery, onYear, results
 
       {filtering && (
         <p className="eyebrow">
-          {results} de {total} shows
+          {t('filter.results', results, total)}
           <button onClick={() => { onQuery(''); onYear(null) }} className="ml-3 underline hover:text-chalk">
-            limpiar
+            {t('filter.clear')}
           </button>
         </p>
       )}

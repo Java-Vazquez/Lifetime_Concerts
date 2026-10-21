@@ -5,16 +5,16 @@ export function parseEventDate(isoDate) {
   return new Date(year, month - 1, day)
 }
 
-export function formatLong(isoDate) {
-  return parseEventDate(isoDate).toLocaleDateString('es-MX', {
+export function formatLong(isoDate, locale = 'es-MX') {
+  return parseEventDate(isoDate).toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   })
 }
 
-export function formatDayMonth(isoDate) {
-  return parseEventDate(isoDate).toLocaleDateString('es-MX', {
+export function formatDayMonth(isoDate, locale = 'es-MX') {
+  return parseEventDate(isoDate).toLocaleDateString(locale, {
     month: 'short',
     day: 'numeric',
   })
