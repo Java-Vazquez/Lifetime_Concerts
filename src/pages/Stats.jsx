@@ -97,21 +97,21 @@ export default function Stats() {
       </Section>
 
       <div className="grid gap-14 sm:grid-cols-2">
-        <Section title="Venues más visitados">
+        <Section title="Venues más visitados" note={`${stats.topVenues.length} venues`}>
           <BarList data={stats.topVenues} unit="shows" />
         </Section>
 
         {stats.repeatArtists.length > 0 && (
           <Section title="Bandas repetidas" note={`${stats.repeatArtists.length} bandas`}>
-            <BarList data={stats.repeatArtists.slice(0, 6)} unit="veces" />
+            <BarList data={stats.repeatArtists} unit="veces" />
           </Section>
         )}
       </div>
 
       {stats.topSongs.length > 0 && (
         <Section
-          title="Canciones más escuchadas"
-          note={sinSetlist > 0 ? `${totals.withSetlist} de ${totals.shows} shows` : undefined}
+          title="Canciones repetidas"
+          note={`${stats.topSongs.length} canciones`}
         >
           <BarList data={stats.topSongs} unit="veces" />
           {sinSetlist > 0 && (

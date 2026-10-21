@@ -18,7 +18,7 @@ export default function NavBar() {
               isActive ? 'text-chalk' : 'text-dim transition-colors hover:text-chalk'
             }
           >
-            Números
+            Estadísticas
           </NavLink>
           {session ? (
             <>

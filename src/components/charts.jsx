@@ -48,11 +48,17 @@ export function YearColumns({ data }) {
 }
 
 // Barras horizontales para rankings: el nombre necesita ancho, el valor va al extremo.
-export function BarList({ data, unit }) {
+// Las listas largas no se recortan: se muestran enteras dentro de un área con scroll.
+export function BarList({ data, unit, scrollAfter = 8 }) {
   const max = Math.max(...data.map((d) => d.value), 1)
+  const scrolls = data.length > scrollAfter
 
   return (
-    <ul className="flex flex-col gap-3">
+    <ul
+      className={`flex flex-col gap-3 ${
+        scrolls ? 'max-h-80 overflow-y-auto pr-3 scroll-subtle' : ''
+      }`}
+    >
       {data.map((d) => (
         <li key={d.label}>
           <div className="flex items-baseline justify-between gap-4">

@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { supabase } from './supabaseClient.js'
 import { yearOf } from './dates.js'
 
-// Cuenta ocurrencias y devuelve el top n como [{ label, value }].
+// Cuenta ocurrencias y las devuelve ordenadas como [{ label, value }].
+// Sin `n` devuelve la lista completa.
 function topBy(items, key, n) {
   const counts = new Map()
   for (const it of items) {
@@ -10,10 +11,10 @@ function topBy(items, key, n) {
     if (!k) continue
     counts.set(k, (counts.get(k) ?? 0) + 1)
   }
-  return [...counts.entries()]
+  const ranked = [...counts.entries()]
     .map(([label, value]) => ({ label, value }))
     .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
-    .slice(0, n)
+  return n ? ranked.slice(0, n) : ranked
 }
 
 // setlist.fm anota partes del show que no son canciones ("Drum Solo", "Intro").
@@ -79,10 +80,11 @@ function buildStats(concerts, songs) {
     nextUp: upcoming[0],
     longestGap,
     longestSetlist,
-    topVenues: topBy(concerts, 'venue_name', 6),
-    repeatArtists: topBy(concerts, 'artist_name', 100).filter((a) => a.value > 1),
-    topSongs: topBy(named, 'name', 8).filter((s) => s.value > 1),
-    festivals: topBy(concerts, 'festival', 10),
+    // Sin recortes: las listas se muestran enteras y la UI les pone scroll.
+    topVenues: topBy(concerts, 'venue_name'),
+    repeatArtists: topBy(concerts, 'artist_name').filter((a) => a.value > 1),
+    topSongs: topBy(named, 'name').filter((s) => s.value > 1),
+    festivals: topBy(concerts, 'festival'),
   }
 }
 

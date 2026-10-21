@@ -14,4 +14,23 @@
   .eyebrow {
     @apply text-[0.68rem] uppercase tracking-[0.18em] text-dim;
   }
+
+  /* Scroll discreto para las listas largas de estadísticas: la barra por defecto
+     de Windows es clara y corta el fondo oscuro. */
+  .scroll-subtle {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.edge') transparent;
+  }
+  .scroll-subtle::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scroll-subtle::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-subtle::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-edge;
+  }
+  .scroll-subtle::-webkit-scrollbar-thumb:hover {
+    @apply bg-dim;
+  }
 }
