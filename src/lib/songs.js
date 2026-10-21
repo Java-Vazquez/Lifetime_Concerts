@@ -1,23 +1,24 @@
-// Qué cuenta como "canción tocada". Única fuente de verdad: la usan tanto el
+// Qué cuenta como parte del show. Única fuente de verdad: la usan tanto el
 // setlist de cada concierto como las estadísticas, así cualquier show que se
 // agregue después queda filtrado igual sin tocar nada más.
 //
-// setlist.fm no se equivoca al registrar esto: marca con `tape` la música
-// grabada que suena por los altavoces (intros, outros, caminatas al escenario)
-// y anota partes del show que no son temas. Nada de eso lo tocó la banda.
-
-// "Drum Solo", "Bass Solo", "Intro", "Jam"… los repite cualquier banda y
-// ensucian tanto el setlist como el ranking de canciones.
-const PLACEHOLDER = /^(?:\w+\s+)?(?:solo|jam)$|^(?:intro|outro|interlude|intermission)$/i
+// El criterio es uno solo: se excluye lo pregrabado. setlist.fm marca con
+// `tape` la música que sonó por los altavoces sin que la banda la tocara
+// (intros, outros, caminatas al escenario).
+//
+// Lo que la banda sí ejecutó se conserva, aunque no sea una canción con
+// nombre propio: los solos de batería o guitarra son parte del show.
+//
+// Ojo al leer los datos: un mismo título puede aparecer dos veces, una como
+// pista y otra tocada en vivo. Rammstein abrió con una grabación de
+// "Deutschland" y después la tocó; se conserva la segunda.
 
 export function isPerformedSong(song) {
-  const name = song?.name?.trim()
-  if (!name) return false
-  if (song.is_tape ?? song.isTape) return false
-  return !PLACEHOLDER.test(name)
+  if (!song?.name?.trim()) return false
+  return !(song.is_tape ?? song.isTape)
 }
 
-// Lo que la banda tocó, en orden.
+// Lo que sonó en vivo, en orden.
 export function performedSongs(songs = []) {
   return songs.filter(isPerformedSong).sort((a, b) => a.position - b.position)
 }
