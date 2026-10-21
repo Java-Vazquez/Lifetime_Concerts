@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './supabaseClient.js'
 import { yearOf } from './dates.js'
+import { isPerformedSong } from './songs.js'
 
 // Cuenta ocurrencias y las devuelve ordenadas como [{ label, value }].
 // Sin `n` devuelve la lista completa.
@@ -15,14 +16,6 @@ function topBy(items, key, n) {
     .map(([label, value]) => ({ label, value }))
     .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
   return n ? ranked.slice(0, n) : ranked
-}
-
-// setlist.fm anota partes del show que no son canciones ("Drum Solo", "Intro").
-// Sumadas al ranking dan resultados sin sentido, porque las repite cualquier banda.
-const PLACEHOLDER = /^(?:\w+\s+)?(?:solo|jam)$|^(?:intro|outro|interlude|intermission)$/i
-
-function isPlaceholder(name) {
-  return PLACEHOLDER.test(name.trim())
 }
 
 function buildStats(concerts, songs) {
@@ -52,9 +45,7 @@ function buildStats(concerts, songs) {
     if (!longestGap || days > longestGap.days) longestGap = { days, from, to }
   }
 
-  const named = songs.filter(
-    (s) => s.name?.trim() && !s.is_tape && !isPlaceholder(s.name),
-  )
+  const named = songs.filter(isPerformedSong)
   const perConcert = new Map()
   for (const s of named) perConcert.set(s.concert_id, (perConcert.get(s.concert_id) ?? 0) + 1)
   const longestSetlist = [...perConcert.entries()]

@@ -1,13 +1,9 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabaseClient.js'
-
-// setlist.fm incluye intros/outros grabadas sin nombre; no aportan nada en la lista.
-export function sortSongs(songs) {
-  return [...songs].filter((s) => s.name?.trim()).sort((a, b) => a.position - b.position)
-}
+import { performedSongs } from '../lib/songs.js'
 
 export default function Setlist({ concert }) {
-  const [songs, setSongs] = useState(sortSongs(concert.songs ?? []))
+  const [songs, setSongs] = useState(performedSongs(concert.songs))
   const [loading, setLoading] = useState(false)
   const [unavailable, setUnavailable] = useState(!concert.setlistfm_id)
   const [error, setError] = useState(null)
@@ -30,7 +26,7 @@ export default function Setlist({ concert }) {
       setUnavailable(true)
       return
     }
-    setSongs(sortSongs(data.songs))
+    setSongs(performedSongs(data.songs))
   }
 
   if (songs.length > 0) {
